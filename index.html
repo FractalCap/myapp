@@ -155,17 +155,11 @@
                     </div>
                 </div>
 
-                <div class="block-controls hidden" id="block-controls">
-                    <button class="action-btn success" id="btn-start-block">INICIAR BLOQUE</button>
-                    <button class="action-btn warning" id="btn-delay-block">DELAY 5 MIN</button>
-                    <button class="action-btn danger" id="btn-skip-block">SKIP</button>
-                </div>
-                
-                <div class="block-controls hidden" id="block-end-controls">
-                    <span class="control-label">CONFIRMAR FINALIZACIÓN:</span>
-                    <button class="action-btn success" id="btn-complete-block">COMPLETADO</button>
-                    <button class="action-btn warning" id="btn-partial-block">PARCIAL</button>
-                    <button class="action-btn danger" id="btn-failed-block">FALLIDO</button>
+                <!-- New Task Confirmation Controls -->
+                <div class="block-controls" id="task-confirmation-controls" style="margin-top: 15px; border-top: 1px solid #333; padding-top: 10px;">
+                    <span class="control-label" style="display:block; margin-bottom:5px; font-size:0.8em; color:#666;">CONFIRMACIÓN DE TAREA</span>
+                    <button class="action-btn success" id="btn-confirm-task" style="width: 48%;">CONFIRMAR TAREA</button>
+                    <button class="action-btn danger" id="btn-procrastinated" style="width: 48%;">HE PROCASTINADO</button>
                 </div>
 
                 <div class="overtime-panel hidden" id="overtime-panel">

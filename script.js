@@ -13,15 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const systemLog = document.getElementById('system-log');
     const blockStatusText = document.getElementById('block-status-text');
 
-    // Block Controls
-    const blockControls = document.getElementById('block-controls');
-    const blockEndControls = document.getElementById('block-end-controls');
-    const btnStartBlock = document.getElementById('btn-start-block');
-    const btnDelayBlock = document.getElementById('btn-delay-block');
-    const btnSkipBlock = document.getElementById('btn-skip-block');
-    const btnCompleteBlock = document.getElementById('btn-complete-block');
-    const btnPartialBlock = document.getElementById('btn-partial-block');
-    const btnFailedBlock = document.getElementById('btn-failed-block');
+    // Block Controls (REMOVED)
     
     // Overtime
     const overtimePanel = document.getElementById('overtime-panel');
@@ -320,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load from LocalStorage
     const loadState = (userKey) => {
-        const key = `nexus_state_${userKey}`;
+        const key = `nexus_state_v2_${userKey}`; // Changed key to reset history
         const saved = localStorage.getItem(key);
         if (saved) {
             const parsed = JSON.parse(saved);
@@ -342,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const saveState = () => {
         if (!currentUser) return;
-        localStorage.setItem(`nexus_state_${currentUser}`, JSON.stringify(appState));
+        localStorage.setItem(`nexus_state_v2_${currentUser}`, JSON.stringify(appState));
     };
     
     // --- Matrix Rain Effect ---
@@ -498,7 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const bState = appState.blockState[hour];
                 
                 // Update UI based on status
-        updateBlockControls(bState.status);
+        // updateBlockControls(bState.status); // Removed
         
         // --- LEVEL SYSTEM CHECK ---
         // If status is 'active', increment progress
@@ -553,69 +545,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function updateBlockControls(status) {
-        if (status === 'awaiting' || status === 'delayed') {
-            blockControls.classList.remove('hidden');
-            blockEndControls.classList.add('hidden');
-        } else if (status === 'active') {
-            blockControls.classList.add('hidden');
-            blockEndControls.classList.remove('hidden');
-        } else {
-            // Completed, failed, skipped
-            blockControls.classList.add('hidden');
-            blockEndControls.classList.add('hidden');
+    // --- Block Actions (REMOVED) ---
+    // Listeners for start/delay/skip/complete removed.
+
+    // --- Task Confirmation Logic ---
+    const btnConfirmTask = document.getElementById('btn-confirm-task');
+    const btnProcrastinated = document.getElementById('btn-procrastinated');
+
+    btnConfirmTask.addEventListener('click', () => {
+        const h = new Date().getHours();
+        
+        // Initialize block state if missing
+        if (!appState.blockState[h]) {
+             appState.blockState[h] = { status: 'awaiting' };
         }
-    }
 
-    // --- Block Actions ---
-    btnStartBlock.addEventListener('click', () => {
-        const h = new Date().getHours();
-        appState.blockState[h] = { ...appState.blockState[h], status: 'active', start: Date.now() };
+        // Check if already confirmed for this block
+        if (appState.blockState[h].confirmed) {
+            alert("Tarea ya confirmada para este bloque.");
+            return;
+        }
+
+        // Increase level
+        appState.level = (appState.level || 1) + 1;
+        
+        // Mark as confirmed for this block
+        appState.blockState[h] = { ...appState.blockState[h], confirmed: true };
+
+        addLogEntry(`TAREA CONFIRMADA: NIVEL ${appState.level}`);
+        updateLevelUI();
         saveState();
-        addLogEntry("BLOQUE INICIADO");
-        updateTime();
+        
+        // Visual feedback
+        btnConfirmTask.textContent = "CONFIRMADO ✓";
+        setTimeout(() => btnConfirmTask.textContent = "CONFIRMAR TAREA", 2000);
     });
 
-    btnDelayBlock.addEventListener('click', () => {
-        const h = new Date().getHours();
-        const currentDelay = appState.blockState[h].delay || 0;
-        appState.blockState[h] = { ...appState.blockState[h], status: 'delayed', delay: currentDelay + 5 };
-        // Penalize delay? Maybe partial strike? Let's say yes for discipline
-        addStrike(); 
+    btnProcrastinated.addEventListener('click', () => {
+        // Reset level
+        appState.level = 1;
+        addLogEntry("PROCRASTINACIÓN DETECTADA: NIVEL REINICIADO");
+        updateLevelUI();
         saveState();
-        addLogEntry("BLOQUE RETRASADO (+1 FALLO)");
-        updateTime();
+        alert("NIVEL REINICIADO A 1. ¡ENFÓCATE!");
     });
 
-    btnSkipBlock.addEventListener('click', () => {
-        const h = new Date().getHours();
-        appState.blockState[h] = { ...appState.blockState[h], status: 'skipped' };
-        addStrike(); // Skipping is a strike
-        saveState();
-        addLogEntry("BLOQUE SALTADO (+1 FALLO)");
-        updateTime();
-    });
-
-    // End Controls
-    btnCompleteBlock.addEventListener('click', () => setBlockEndStatus('completed'));
-    
-    btnPartialBlock.addEventListener('click', () => {
-        addStrike(); // Partial is not perfect
-        setBlockEndStatus('partial');
-    });
-    
-    btnFailedBlock.addEventListener('click', () => {
-        addStrike(); // Failed is a strike
-        setBlockEndStatus('failed');
-    });
-
-    function setBlockEndStatus(status) {
-        const h = new Date().getHours();
-        appState.blockState[h] = { ...appState.blockState[h], status: status };
-        saveState();
-        addLogEntry(`BLOQUE FINALIZADO: ${status.toUpperCase()}`);
-        updateTime();
-    }
+    // function setBlockEndStatus(status) { ... } // Removed
 
     // --- Overtime Logic ---
     let selectedOtMin = 0;
