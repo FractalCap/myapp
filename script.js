@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load from LocalStorage
     const loadState = (userKey) => {
-        const key = `nexus_state_v2_${userKey}`; // Changed key to reset history
+        const key = `nexus_state_v3_${userKey}`; // Changed key to reset history
         const saved = localStorage.getItem(key);
         if (saved) {
             const parsed = JSON.parse(saved);
@@ -334,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const saveState = () => {
         if (!currentUser) return;
-        localStorage.setItem(`nexus_state_v2_${currentUser}`, JSON.stringify(appState));
+        localStorage.setItem(`nexus_state_v3_${currentUser}`, JSON.stringify(appState));
     };
     
     // --- Matrix Rain Effect ---
