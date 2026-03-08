@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS | SO EJECUTIVO</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;300;400;500;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="noise-overlay"></div>
+    <div class="scanline"></div>
+
+    <!-- MATRIX LOGIN SCREEN -->
+    <div id="login-screen" class="login-screen">
+        <div class="matrix-rain" id="matrix-rain"></div>
+        <div class="login-container">
+            <h1 class="login-title">NEXUS OS <span class="version">v3.1</span></h1>
+            <p class="login-subtitle">SELECCIONE OPERADOR</p>
+            
+            <div class="user-select">
+                <div class="user-card" onclick="selectUser('kevin')">
+                    <div class="user-avatar" style="background-image: url('https://i.postimg.cc/Mpb2NVZJ/images-(1).jpg'); background-size: cover;"></div>
+                    <div class="user-name">KEVIN</div>
+                    <div class="user-role">COMMANDER</div>
+                </div>
+                
+                <div class="user-card" onclick="selectUser('karol')">
+                    <div class="user-avatar" style="background-image: url('https://i.postimg.cc/j5GRtTGy/Captura-de-pantalla-2026-03-08-001654.jpg'); background-size: cover;"></div>
+                    <div class="user-name">KAROL</div>
+                    <div class="user-role">ARCHITECT</div>
+                </div>
+            </div>
+
+            <div class="system-msg" id="system-msg">ESPERANDO ENTRADA...</div>
+        </div>
+    </div>
+    
+    <div class="layout-grid hidden" id="main-app">
+        <!-- Header -->
+        <header class="top-bar">
+            <div class="system-status">
+                <span class="status-indicator"></span>
+                <span class="status-text">SISTEMA EN LÍNEA</span>
+            </div>
+            
+            <div class="level-system">
+                <div class="level-box">
+                    <span class="lvl-label">NIVEL</span>
+                    <span class="lvl-val" id="user-level">1</span>
+                </div>
+                <div class="level-box">
+                    <span class="lvl-label">FALLOS</span>
+                    <span class="lvl-val danger" id="user-strikes">0</span>
+                    <span class="lvl-max">/100</span>
+                </div>
+            </div>
+
+            <div class="date-display" id="date-display">2024.10.24</div>
+            <div class="user-profile">
+                <span class="user-role" id="display-role">COMANDANTE</span>
+                <div class="avatar-circle" id="display-avatar"></div>
+            </div>
+        </header>
+
+        <!-- Sidebar / Focus Selector -->
+        <aside class="sidebar">
+            <div class="focus-selector" id="focus-list">
+                <!-- JS will populate this based on user -->
+            </div>
+            
+            <div class="tracker-panel">
+                <h3 class="mini-title">MORNING FUEL</h3>
+                <div class="checklist">
+                    <label class="check-item">
+                        <input type="checkbox" id="fuel-eggs">
+                        <span class="checkmark"></span>
+                        <span class="check-text">2 HUEVOS</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="fuel-kefir">
+                        <span class="checkmark"></span>
+                        <span class="check-text">KEFIR</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="fuel-coffee">
+                        <span class="checkmark"></span>
+                        <span class="check-text">½ CAFÉ</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="tracker-panel">
+                <h3 class="mini-title">CAFFEINE TRACKER</h3>
+                <div class="checklist">
+                    <label class="check-item">
+                        <input type="checkbox" id="caff-morning">
+                        <span class="checkmark"></span>
+                        <span class="check-text">MAÑANA (½)</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="caff-workout">
+                        <span class="checkmark"></span>
+                        <span class="check-text">POST ENTRENAMIENTO (½)</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="caff-3pm">
+                        <span class="checkmark"></span>
+                        <span class="check-text">3 PM (½)</span>
+                    </label>
+                    <label class="check-item">
+                        <input type="checkbox" id="caff-6pm">
+                        <span class="checkmark"></span>
+                        <span class="check-text">6 PM (½)</span>
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-dashboard">
+            <!-- Hero / Active Block -->
+            <section class="hero-section" id="active-block-container">
+                <div class="block-header">
+                    <span class="block-badge" id="current-state-badge">ESTADO ACTUAL</span>
+                    <div class="live-indicator">
+                        <span class="pulse"></span> EN VIVO
+                    </div>
+                </div>
+                
+                <div class="hero-grid">
+                    <div class="hero-info">
+                        <h1 class="current-task-title" id="current-task">TRABAJO PROFUNDO</h1>
+                        <div class="hero-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">BLOQUE ACTUAL</span>
+                                <span class="meta-value" id="current-block-time">04:00 - 18:00</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">SIGUIENTE</span>
+                                <span class="meta-value" id="next-block-time">18:00 - 19:00</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">ESTADO BLOQUE</span>
+                                <span class="meta-value" id="block-status-text">CONFIRMANDO...</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="timer-display">
+                        <div class="time-remaining" id="main-timer">00:45:00</div>
+                        <div class="timer-label">RESTANTE</div>
+                    </div>
+                </div>
+
+                <div class="block-controls hidden" id="block-controls">
+                    <button class="action-btn success" id="btn-start-block">INICIAR BLOQUE</button>
+                    <button class="action-btn warning" id="btn-delay-block">DELAY 5 MIN</button>
+                    <button class="action-btn danger" id="btn-skip-block">SKIP</button>
+                </div>
+                
+                <div class="block-controls hidden" id="block-end-controls">
+                    <span class="control-label">CONFIRMAR FINALIZACIÓN:</span>
+                    <button class="action-btn success" id="btn-complete-block">COMPLETADO</button>
+                    <button class="action-btn warning" id="btn-partial-block">PARCIAL</button>
+                    <button class="action-btn danger" id="btn-failed-block">FALLIDO</button>
+                </div>
+
+                <div class="overtime-panel hidden" id="overtime-panel">
+                    <h3 class="mini-title">DESBLOQUEAR TIEMPO EXTRA</h3>
+                    <div class="ot-options">
+                        <button class="ot-btn" data-min="30">30 MIN</button>
+                        <button class="ot-btn" data-min="60">60 MIN</button>
+                        <button class="ot-btn" data-min="90">90 MIN</button>
+                    </div>
+                    <input type="text" id="ot-reason" placeholder="Razón del Overtime..." class="ot-input">
+                    <button class="action-btn success" id="btn-confirm-ot">ACTIVAR OVERRIDE</button>
+                </div>
+
+                <div class="progress-line">
+                    <div class="progress-fill" id="block-progress"></div>
+                </div>
+            </section>
+
+            <!-- Priority & Anti-Craving Grid -->
+            <div class="mid-grid">
+                <!-- Priority Control -->
+                <section class="priority-panel">
+                    <h3 class="panel-title">CONTROL DE PRIORIDAD</h3>
+                    <div class="priority-controls" id="priority-list">
+                        <!-- JS will populate this -->
+                    </div>
+                </section>
+
+                <!-- Anti-Craving Protocol -->
+                <section class="craving-panel">
+                    <h3 class="panel-title">PROTOCOLO ANTI-CRAVING</h3>
+                    <button id="craving-btn" class="craving-btn">QUIERO FUMAR</button>
+                    
+                    <div id="craving-steps" class="craving-steps hidden">
+                        <div class="step" id="step-breath">1. RESPIRA (10s)</div>
+                        <div class="step" id="step-water">2. AGUA (20s)</div>
+                        <div class="step" id="step-minecraft">3. MINECRAFT (10m)</div>
+                        
+                        <div class="craving-actions hidden" id="craving-actions">
+                            <button class="action-btn success" id="craving-defeated">DERROTADO</button>
+                            <button class="action-btn danger" id="craving-still">AÚN QUIERO</button>
+                        </div>
+                    </div>
+
+                    <div class="craving-stats">
+                        <div class="cs-item">
+                            <span class="cs-val" id="stats-cravings">0</span>
+                            <span class="cs-lbl">ANTOJOS</span>
+                        </div>
+                        <div class="cs-item">
+                            <span class="cs-val" id="stats-defeated">0</span>
+                            <span class="cs-lbl">VICTORIAS</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Hourly History -->
+            <section class="history-panel">
+                <h3 class="panel-title">REGISTRO DEL SISTEMA</h3>
+                <div class="log-container" id="system-log">
+                    <!-- JS will populate this -->
+                    <div class="log-entry">
+                        <span class="log-time">08:00</span>
+                        <span class="log-action">SISTEMA INICIALIZADO</span>
+                        <span class="log-status success">OK</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Right Panel / Timeline -->
+        <aside class="timeline-sidebar">
+            <div class="clock-display" id="clock-display">09:41</div>
+            <h3 class="panel-title">LÍNEA DE TIEMPO</h3>
+            <div class="timeline-wrapper" id="timeline-container">
+                <!-- JS will populate this -->
+            </div>
+        </aside>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
