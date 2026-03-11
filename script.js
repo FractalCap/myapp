@@ -28,7 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const priorityLevels = document.querySelectorAll('.pc-level');
     
     // Craving
-    const cravingBtn = document.getElementById('craving-btn');
+    const cravingBtnSmoke = document.getElementById('craving-btn-smoke');
+    const cravingBtnCaffeine = document.getElementById('craving-btn-caffeine');
+    const cravingButtons = document.querySelector('.craving-buttons');
     const cravingSteps = document.getElementById('craving-steps');
     const cravingActions = document.getElementById('craving-actions');
     const btnDefeated = document.getElementById('craving-defeated');
@@ -47,28 +49,76 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: 'yo', label: 'YO' }
             ],
             schedule: [
-                { start: 3, end: 4, title: 'MORNING RESET', type: 'rutina', focus: 'yo' },
-                { start: 4, end: 6, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
-                { start: 6, end: 7, title: 'EXERCISE', type: 'salud', focus: 'yo' },
-                { start: 7, end: 19, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
-                { start: 19, end: 20, title: 'FINAL FOCUS', type: 'cierre', focus: 'j' },
-                { start: 20, end: 27, title: 'SLEEP MODE', type: 'descanso', focus: 'off' }
+                // 3:00 - 4:00 MORNING RESET
+                { start: 3.0, end: 3.5, title: 'MORNING RESET', type: 'rutina', focus: 'yo' },
+                { start: 3.5, end: 4.0, title: 'MORNING RESET', type: 'rutina', focus: 'yo' },
+                // 4:00 - 6:00 DEEP WORK
+                { start: 4.0, end: 4.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 4.5, end: 5.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 5.0, end: 5.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 5.5, end: 6.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                // 6:00 - 7:00 EXERCISE
+                { start: 6.0, end: 6.5, title: 'EXERCISE', type: 'salud', focus: 'yo' },
+                { start: 6.5, end: 7.0, title: 'EXERCISE', type: 'salud', focus: 'yo' },
+                // 7:00 - 19:00 DEEP WORK (12 hours -> 24 blocks)
+                { start: 7.0, end: 7.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 7.5, end: 8.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 8.0, end: 8.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 8.5, end: 9.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 9.0, end: 9.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 9.5, end: 10.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 10.0, end: 10.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 10.5, end: 11.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 11.0, end: 11.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 11.5, end: 12.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 12.0, end: 12.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 12.5, end: 13.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 13.0, end: 13.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 13.5, end: 14.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 14.0, end: 14.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 14.5, end: 15.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 15.0, end: 15.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 15.5, end: 16.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 16.0, end: 16.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 16.5, end: 17.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 17.0, end: 17.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 17.5, end: 18.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 18.0, end: 18.5, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                { start: 18.5, end: 19.0, title: 'DEEP WORK', type: 'trabajo', focus: 'j' },
+                // 19:00 - 20:00 FINAL FOCUS
+                { start: 19.0, end: 19.5, title: 'FINAL FOCUS', type: 'cierre', focus: 'j' },
+                { start: 19.5, end: 20.0, title: 'FINAL FOCUS', type: 'cierre', focus: 'j' },
+                // 20:00 - 27:00 SLEEP MODE
+                { start: 20.0, end: 27.0, title: 'SLEEP MODE', type: 'descanso', focus: 'off' }
             ]
         },
         karol: {
             role: 'ARCHITECT',
             focusOptions: [
                 { id: 'bebe', label: 'BEBÉ' },
-                { id: 'calidad', label: 'TRABAJO CALIDAD' },
+                { id: 'calidad', label: 'TRABAJO' },
                 { id: 'aseo', label: 'ASEO' },
-                { id: 'comida', label: 'COMIDA' }
+                { id: 'comida', label: 'COMIDA' },
+                { id: 'yo', label: 'TIEMPO MÍO' },
+                { id: 'gatos', label: 'GATOS' }
             ],
             schedule: [
-                { start: 6, end: 7, title: 'MORNING BABY + COCINAR', type: 'rutina', focus: 'bebe' },
-                { start: 7, end: 9, title: 'ASEO & ARREGLARSE', type: 'personal', focus: 'aseo' },
-                { start: 9, end: 12, title: 'TRABAJO DE CALIDAD', type: 'trabajo', focus: 'calidad' },
-                { start: 12, end: 14, title: 'ALMUERZO & BEBÉ', type: 'familia', focus: 'bebe' },
-                { start: 14, end: 18, title: 'TRABAJO DE CALIDAD', type: 'trabajo', focus: 'calidad' },
+                { start: 6, end: 7, title: 'TIEMPO DE THIAGO', type: 'rutina', focus: 'bebe' },
+                { start: 7, end: 8, title: 'TIEMPO DE ASEO', type: 'personal', focus: 'aseo' },
+                { start: 8, end: 8.5, title: 'TIEMPO DE KAROL', type: 'personal', focus: 'yo' },
+                { start: 8.5, end: 9, title: 'TIEMPO DE THIAGO', type: 'rutina', focus: 'bebe' },
+                { start: 9, end: 10, title: 'TIEMPO DE TRABAJO', type: 'trabajo', focus: 'calidad' },
+                { start: 10, end: 10.5, title: 'TIEMPO DE THIAGO', type: 'rutina', focus: 'bebe' },
+                { start: 10.5, end: 11, title: 'TIEMPO DE ASEO', type: 'personal', focus: 'aseo' },
+                { start: 11, end: 12, title: 'TIEMPO DE TRABAJO', type: 'trabajo', focus: 'calidad' },
+                { start: 12, end: 12.5, title: 'TIEMPO DE THIAGO', type: 'rutina', focus: 'bebe' },
+                { start: 12.5, end: 13.5, title: 'TIEMPO DE TRABAJO', type: 'trabajo', focus: 'calidad' },
+                { start: 13.5, end: 14, title: 'TIEMPO DE KAROL', type: 'personal', focus: 'yo' },
+                { start: 14, end: 14.5, title: 'TIEMPO DE THIAGO', type: 'rutina', focus: 'bebe' },
+                { start: 14.5, end: 16, title: 'TIEMPO DE TRABAJO', type: 'trabajo', focus: 'calidad' },
+                { start: 16, end: 16.5, title: 'TIEMPO DE THIAGO', type: 'rutina', focus: 'bebe' },
+                { start: 16.5, end: 17, title: 'TIEMPO DE GATOS', type: 'personal', focus: 'gatos' },
+                { start: 17, end: 18, title: 'TIEMPO DE TRABAJO', type: 'trabajo', focus: 'calidad' },
                 { start: 18, end: 20, title: 'TIEMPO LIBRE / CENA', type: 'personal', focus: 'comida' },
                 { start: 20, end: 27, title: 'DESCANSO', type: 'descanso', focus: 'off' }
             ],
@@ -105,7 +155,9 @@ document.addEventListener('DOMContentLoaded', () => {
         overtime: null,
         level: 1,
         strikes: 0,
-        activeMinutes: 0 // Track active minutes for leveling up
+        activeMinutes: 0, // Track active minutes for leveling up
+        lastDate: null, // For daily reset logic
+        dailyConfirmed: false // Requires at least one confirmation per day
     };
     
     // --- Login Logic ---
@@ -261,8 +313,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tweaks.cravingTitle) {
             const cravingPanel = document.querySelector('.craving-panel');
             cravingPanel.querySelector('.panel-title').textContent = tweaks.cravingTitle;
-            const btn = document.getElementById('craving-btn');
-            btn.textContent = tweaks.cravingBtnText;
+            
+            // For Karol/Custom, we assume single button mode for now or specific config
+            if (cravingBtnSmoke) {
+                cravingBtnSmoke.textContent = tweaks.cravingBtnText;
+                cravingBtnSmoke.classList.remove('hidden');
+            }
+            if (cravingBtnCaffeine) {
+                cravingBtnCaffeine.classList.add('hidden'); // Hide caffeine for custom mode by default
+            }
             
             // Update steps dynamically when run
             appState.customCravingSteps = tweaks.cravingSteps;
@@ -284,7 +343,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const cravingPanel = document.querySelector('.craving-panel');
         cravingPanel.querySelector('.panel-title').textContent = 'PROTOCOLO ANTI-CRAVING';
-        document.getElementById('craving-btn').textContent = 'QUIERO FUMAR';
+        
+        if (cravingBtnSmoke) {
+            cravingBtnSmoke.textContent = 'QUIERO FUMAR';
+            cravingBtnSmoke.classList.remove('hidden');
+        }
+        if (cravingBtnCaffeine) {
+            cravingBtnCaffeine.textContent = 'QUIERO CAFEÍNA';
+            cravingBtnCaffeine.classList.remove('hidden');
+        }
+        
         appState.customCravingSteps = null;
     }
     
@@ -312,8 +380,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load from LocalStorage
     const loadState = (userKey) => {
-        const key = `nexus_state_v3_${userKey}`; // Changed key to reset history
+        const key = `nexus_state_v4_${userKey}`; // Updated to v4 for history reset
         const saved = localStorage.getItem(key);
+        const today = new Date().toDateString();
+
         if (saved) {
             const parsed = JSON.parse(saved);
             // Merge carefully to not overwrite config
@@ -321,20 +391,37 @@ document.addEventListener('DOMContentLoaded', () => {
             // Ensure proper structures
             if (!appState.blockState) appState.blockState = {};
             
+            // Check Daily Reset
+            if (appState.lastDate !== today) {
+                console.log("New Day Detected: Resetting Daily Progress");
+                appState.lastDate = today;
+                appState.dailyConfirmed = false;
+                appState.blockState = {}; // Clear previous day's blocks
+                appState.activeMinutes = 0;
+                
+                // appState.level = 1; // Optional: Reset level daily? User said "each day must update to level up".
+                // We'll keep level but require confirmation to proceed.
+                addLogEntry("SISTEMA: NUEVO DÍA DETECTADO. CONFIRMA ACTIVIDAD.");
+            }
+
             // Restore UI
             updatePriorityUI();
             updateCravingStats();
             restoreChecklists();
             restoreLog();
         } else {
-            // New user state
+            // New user state (or reset)
+            appState.lastDate = today;
+            appState.dailyConfirmed = false;
             restoreLog(); // Init empty log
         }
+        
+        updateLevelUI();
     };
 
     const saveState = () => {
         if (!currentUser) return;
-        localStorage.setItem(`nexus_state_v3_${currentUser}`, JSON.stringify(appState));
+        localStorage.setItem(`nexus_state_v4_${currentUser}`, JSON.stringify(appState));
     };
     
     // --- Matrix Rain Effect ---
@@ -383,11 +470,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Core Logic ---
 
-    function getBlockForHour(hour) {
+    function getBlockForTime(decimalTime) {
         if (!CONFIG.schedule.length) return null;
         // Handle 00-03 as 24-27 for easier calculation
-        let checkHour = hour < 3 ? hour + 24 : hour;
-        return CONFIG.schedule.find(b => checkHour >= b.start && checkHour < b.end);
+        let checkTime = decimalTime < 3 ? decimalTime + 24 : decimalTime;
+        return CONFIG.schedule.find(b => checkTime >= b.start && checkTime < b.end);
     }
 
     function updateTime() {
@@ -399,7 +486,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Clock & Date ---
         const hStr = String(hour).padStart(2, '0');
         const mStr = String(min).padStart(2, '0');
-        const sStr = String(sec).padStart(2, '0');
         
         clockDisplay.textContent = `${hStr}:${mStr}`;
         
@@ -419,8 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nextBlockTime.textContent = "03:00 - 04:00";
             document.querySelector('.live-indicator').style.opacity = '0.3';
             
-            blockControls.classList.add('hidden');
-            blockEndControls.classList.add('hidden');
+            document.getElementById('task-confirmation-controls').classList.add('hidden');
             blockStatusText.textContent = "SLEEPING";
             
             // Show Overtime Unlock if not active
@@ -458,49 +543,81 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.remove('sleep-mode');
             overtimePanel.classList.add('hidden');
             
-            const currentBlock = getBlockForHour(hour);
+            const decimalTime = hour + (min / 60);
+            const currentBlock = getBlockForTime(decimalTime);
+            
             if (currentBlock) {
                 currentTaskTitle.textContent = currentBlock.title;
                 currentStateBadge.textContent = currentBlock.type.toUpperCase();
-                currentBlockTime.textContent = `${String(currentBlock.start).padStart(2,'0')}:00 - ${String(currentBlock.end).padStart(2,'0')}:00`;
+                
+                // Format times for display
+                const formatTime = (t) => {
+                    const h = Math.floor(t);
+                    const m = Math.round((t - h) * 60);
+                    return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+                };
+                
+                currentBlockTime.textContent = `${formatTime(currentBlock.start)} - ${formatTime(currentBlock.end)}`;
                 
                 let nextStart = currentBlock.end;
                 if (nextStart >= 24) nextStart -= 24;
-                nextBlockTime.textContent = `${String(nextStart).padStart(2,'0')}:00`;
+                nextBlockTime.textContent = formatTime(nextStart);
 
                 // Timer
-                const nextHourDate = new Date(now);
-                nextHourDate.setHours(hour + 1, 0, 0, 0);
-                const diff = nextHourDate - now;
-                const tm = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-                const ts = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
-                mainTimer.textContent = `00:${tm}:${ts}`;
-
-                // Progress
-                const progress = (min / 60) * 100;
-                blockProgress.style.width = `${progress}%`;
+                const endTime = currentBlock.end < 3 ? currentBlock.end + 24 : currentBlock.end;
+                const endDate = new Date(now);
+                endDate.setHours(Math.floor(endTime), Math.round((endTime - Math.floor(endTime)) * 60), 0, 0);
                 
-                // --- BLOCK TRACKING LOGIC ---
-                // Initialize if new hour
-                if (!appState.blockState[hour]) {
-                    appState.blockState[hour] = { status: 'awaiting', delay: 0 };
-                    saveState();
+                // If end date is tomorrow (crossing midnight for real)
+                if (endTime >= 24 && now.getHours() < 3) {
+                     // logic handled by >= 24 check basically
+                } else if (endTime >= 24) {
+                    // Current time is late (e.g. 23:00), end is 25 (01:00)
+                    // No special adjustment needed for Date object if we add hours correctly? 
+                    // Date setHours handles overflow (25 hours -> 1 am next day) automatically
                 }
                 
-                const bState = appState.blockState[hour];
+                const diff = endDate - now;
+                // Avoid negative timer if slight sync issue
+                if (diff < 0) {
+                     mainTimer.textContent = "00:00:00";
+                } else {
+                    const th = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0'); // Add hours
+                    const tm = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+                    const ts = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+                    mainTimer.textContent = `${th}:${tm}:${ts}`;
+                }
+
+                // Progress
+                const blockDuration = (currentBlock.end - currentBlock.start) * 60; // minutes
+                const elapsed = (decimalTime - currentBlock.start) * 60;
+                const progress = (elapsed / blockDuration) * 100;
+                blockProgress.style.width = `${Math.min(100, Math.max(0, progress))}%`;
                 
-                // Update UI based on status
-        // updateBlockControls(bState.status); // Removed
-        
-        // --- LEVEL SYSTEM CHECK ---
-        // If status is 'active', increment progress
-        if (bState.status === 'active') {
-            if (sec === 0) { // Check once per minute
-                checkLevelProgress();
-            }
-        }
-        
-        let statusLabel = "UNKNOWN";
+                // --- BLOCK TRACKING LOGIC ---
+                const blockKey = String(currentBlock.start); // Use start time as key
+                
+                // Initialize if new block
+                if (!appState.blockState[blockKey]) {
+                    appState.blockState[blockKey] = { status: 'awaiting', delay: 0 };
+                    saveState();
+                    // Reset confirmation buttons visibility
+                    document.getElementById('task-confirmation-controls').classList.remove('hidden');
+                    const btn = document.getElementById('btn-confirm-task');
+                    btn.textContent = "CONFIRMAR TAREA";
+                    btn.classList.remove('hidden');
+                }
+                
+                const bState = appState.blockState[blockKey];
+                
+                // Check Level Progress
+                if (bState.status === 'active') {
+                    if (sec === 0) { // Check once per minute
+                        checkLevelProgress();
+                    }
+                }
+                
+                let statusLabel = "UNKNOWN";
                 if (bState.status === 'awaiting') statusLabel = "ESPERANDO CONFIRMACIÓN";
                 if (bState.status === 'active') statusLabel = "ACTIVO - EN PROGRESO";
                 if (bState.status === 'delayed') statusLabel = "RETRASADO";
@@ -508,41 +625,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (bState.status === 'completed') statusLabel = "COMPLETADO";
                 
                 blockStatusText.textContent = statusLabel;
+                
+                // Hide confirmation controls if confirmed
+                if (bState.confirmed) {
+                     document.getElementById('task-confirmation-controls').classList.add('hidden');
+                } else {
+                     document.getElementById('task-confirmation-controls').classList.remove('hidden');
+                }
             }
         }
 
-        // --- Hourly Log & Reset ---
-        if (hour !== appState.lastLogHour) {
-            // If hour changed, mark previous as completed if active?
-            // Better: prompt for completion at end of hour.
-            // For now, auto-log previous hour
-            if (appState.lastLogHour !== -1) {
-                const prevB = appState.blockState[appState.lastLogHour];
-                const block = getBlockForHour(appState.lastLogHour);
-                
-                // If it was active but not marked completed, mark as Partial or Completed automatically?
-                // Let's mark as completed for history log purposes if it was active
-                let finalStatus = 'UNKNOWN';
-                if (prevB) {
-                    finalStatus = prevB.status === 'active' ? 'COMPLETED (AUTO)' : prevB.status.toUpperCase();
-                    // Update state to completed if it was active
-                    if (prevB.status === 'active') {
-                        appState.blockState[appState.lastLogHour].status = 'completed';
-                    }
-                }
-                
-                const logData = {
-                    hour: appState.lastLogHour,
-                    block: block ? block.title : 'SLEEP/OTHER',
-                    focus: appState.currentFocus,
-                    status: finalStatus
-                };
-                saveHistoryLog(logData);
-            }
-            appState.lastLogHour = hour;
-            saveState();
-            renderTimeline(); 
-        }
+        // --- Hourly Log & Reset (Simplified for now) ---
+        // Logic to log finished blocks... complicated with variable times. 
+        // For now, rely on manual confirmation or just state updates.
+        // We can track "lastLoggedBlock" instead of lastLogHour
     }
 
     // --- Block Actions (REMOVED) ---
@@ -553,24 +649,36 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnProcrastinated = document.getElementById('btn-procrastinated');
 
     btnConfirmTask.addEventListener('click', () => {
-        const h = new Date().getHours();
+        const now = new Date();
+        const decimalTime = now.getHours() + (now.getMinutes() / 60);
+        const currentBlock = getBlockForTime(decimalTime);
+        
+        if (!currentBlock) return;
+        
+        const blockKey = String(currentBlock.start);
         
         // Initialize block state if missing
-        if (!appState.blockState[h]) {
-             appState.blockState[h] = { status: 'awaiting' };
+        if (!appState.blockState[blockKey]) {
+             appState.blockState[blockKey] = { status: 'awaiting' };
         }
 
         // Check if already confirmed for this block
-        if (appState.blockState[h].confirmed) {
+        if (appState.blockState[blockKey].confirmed) {
             alert("Tarea ya confirmada para este bloque.");
             return;
+        }
+
+        // Daily Confirmation Logic
+        if (!appState.dailyConfirmed) {
+            appState.dailyConfirmed = true;
+            addLogEntry("SISTEMA: PRIMERA CONFIRMACIÓN DEL DÍA. REGISTRO ACTIVO.");
         }
 
         // Increase level
         appState.level = (appState.level || 1) + 1;
         
         // Mark as confirmed for this block
-        appState.blockState[h] = { ...appState.blockState[h], confirmed: true };
+        appState.blockState[blockKey] = { ...appState.blockState[blockKey], confirmed: true, status: 'active' };
 
         addLogEntry(`TAREA CONFIRMADA: NIVEL ${appState.level}`);
         updateLevelUI();
@@ -579,6 +687,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Visual feedback
         btnConfirmTask.textContent = "CONFIRMADO ✓";
         setTimeout(() => btnConfirmTask.textContent = "CONFIRMAR TAREA", 2000);
+        
+        // Force timeline update to show active state
+        renderTimeline();
+        // Force update UI immediately to hide buttons
+        updateTime();
     });
 
     btnProcrastinated.addEventListener('click', () => {
@@ -625,58 +738,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderTimeline() {
         const now = new Date();
-        const currentHour = now.getHours();
+        const decimalTime = now.getHours() + (now.getMinutes() / 60);
         
         timelineContainer.innerHTML = '';
 
-        // Render from 03:00 to 20:00
-        for (let h = 3; h < 20; h++) {
-            const block = getBlockForHour(h);
-            if (!block) continue;
+        if (!CONFIG.schedule || CONFIG.schedule.length === 0) return;
+
+        CONFIG.schedule.forEach(block => {
+            // Skip Sleep Mode blocks in timeline if desired, or show them. 
+            // Usually we show active day. 
+            if (block.type === 'descanso' && block.start >= 20) return; // Hide night sleep
 
             const div = document.createElement('div');
             div.className = 'timeline-item';
             
             // Determine Visual State from blockState history
-            const bState = appState.blockState[h];
+            const blockKey = String(block.start);
+            const bState = appState.blockState[blockKey];
             let visualClass = 'pending';
             
-            if (h === currentHour) {
+            // Check if active
+            const isActive = decimalTime >= block.start && decimalTime < block.end;
+            const isPast = decimalTime >= block.end;
+            
+            if (isActive) {
                 visualClass = 'active';
-            } else if (h < currentHour) {
-                // Past blocks
+            } else if (isPast) {
                 if (bState) {
                     if (bState.status === 'completed') visualClass = 'completed';
                     else if (bState.status === 'failed') visualClass = 'failed';
                     else if (bState.status === 'skipped') visualClass = 'skipped';
-                    else visualClass = 'completed'; // Default to completed if just passed
+                    else if (bState.status === 'active') visualClass = 'completed'; // Assumed done
+                    else visualClass = 'completed'; // Default
                 } else {
                     visualClass = 'completed';
                 }
             } else {
-                // Future
                 visualClass = 'pending';
             }
             
-            // Detailed states if active
-            if (h === currentHour && bState) {
+            // Detailed active states
+            if (isActive && bState) {
                 if (bState.status === 'awaiting') visualClass = 'awaiting';
                 if (bState.status === 'active') visualClass = 'active';
             }
 
             div.classList.add(visualClass);
+            
+            const formatTime = (t) => {
+                const h = Math.floor(t);
+                const m = Math.round((t - h) * 60);
+                return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+            };
 
-            const displayHour = String(h).padStart(2, '0') + ':00';
+            const displayTime = formatTime(block.start);
             
             div.innerHTML = `
-                <div class="timeline-time">${displayHour}</div>
+                <div class="timeline-time">${displayTime}</div>
                 <div class="timeline-content">
                     <span class="t-title">${block.title}</span>
                     <span class="t-desc">${block.type.toUpperCase()}</span>
                 </div>
             `;
             timelineContainer.appendChild(div);
-        }
+        });
     }
 
     function restoreLog() {
@@ -767,25 +892,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // Anti-Craving Protocol
     let cravingTimer = null;
     
-    cravingBtn.addEventListener('click', () => {
+    function handleCravingClick() {
         appState.cravingStats.total++;
         updateCravingStats();
         saveState();
         
-        cravingBtn.classList.add('hidden');
+        if (cravingButtons) cravingButtons.classList.add('hidden');
+        if (cravingBtnSmoke) cravingBtnSmoke.classList.add('hidden'); // Safety
+        
         cravingSteps.classList.remove('hidden');
         
         startCravingProtocol();
-    });
+    }
+
+    if (cravingBtnSmoke) cravingBtnSmoke.addEventListener('click', handleCravingClick);
+    if (cravingBtnCaffeine) cravingBtnCaffeine.addEventListener('click', handleCravingClick);
 
     function startCravingProtocol() {
         // Use custom steps if available (Karol) or default (Kevin)
         const steps = appState.customCravingSteps 
             ? appState.customCravingSteps 
             : [
-                { id: 'step-breath', text: '1. RESPIRA (10s)', time: 10000 },
-                { id: 'step-water', text: '2. AGUA (20s)', time: 20000 },
-                { id: 'step-minecraft', text: '3. MINECRAFT (10m)', time: 600000 }
+                { id: 'step-game', text: '1. JUGAR UN JUEGO (15m)', time: 900000 },
+                { id: 'step-family', text: '2. ESTAR CON FAMILIA (15m)', time: 900000 }
             ];
             
         // Render steps dynamically
@@ -833,15 +962,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     btnStill.addEventListener('click', () => {
-        resetCravingUI(); // Or restart? User said "Still Craving -> restart".
-        // Let's restart immediately
-        cravingBtn.click();
+        resetCravingUI(); 
+        handleCravingClick();
     });
 
     function resetCravingUI() {
         cravingSteps.classList.add('hidden');
         cravingActions.classList.add('hidden');
-        cravingBtn.classList.remove('hidden');
+        
+        if (cravingButtons) cravingButtons.classList.remove('hidden');
+        
+        // Restore individual button visibility based on user
+        if (currentUser === 'karol') {
+            if (cravingBtnSmoke) cravingBtnSmoke.classList.remove('hidden');
+            if (cravingBtnCaffeine) cravingBtnCaffeine.classList.add('hidden');
+        } else {
+            if (cravingBtnSmoke) cravingBtnSmoke.classList.remove('hidden');
+            if (cravingBtnCaffeine) cravingBtnCaffeine.classList.remove('hidden');
+        }
         
         document.querySelectorAll('.step').forEach(s => {
             s.classList.remove('active', 'done');

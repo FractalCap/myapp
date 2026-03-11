@@ -1,12 +1,12 @@
 :root {
-    --bg-color: #050505;
-    --panel-bg: rgba(20, 20, 20, 0.6);
-    --text-primary: #ffffff;
-    --text-secondary: #888888;
-    --text-dim: #444444;
-    --accent-glow: rgba(255, 255, 255, 0.15);
-    --border-color: rgba(255, 255, 255, 0.1);
-    --border-active: rgba(255, 255, 255, 0.6);
+    --bg-color: #080808; /* Slightly lighter black for better contrast */
+    --panel-bg: rgba(20, 20, 20, 0.95); /* More solid, less transparent */
+    --text-primary: #f0f0f0;
+    --text-secondary: #a0a0a0;
+    --text-dim: #555555;
+    --accent-glow: rgba(255, 255, 255, 0.05);
+    --border-color: #333; /* Solid border color */
+    --border-active: #fff;
     --success: #cccccc;
     --warning: #aaaaaa;
     --danger: #ffffff;
@@ -32,39 +32,17 @@ body {
     overflow: hidden;
     position: relative;
     font-size: 16px;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em; /* Reduced letter spacing */
 }
 
 /* --- ATMOSPHERE --- */
 
 .noise-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.04"/%3E%3C/svg%3E');
-    pointer-events: none;
-    z-index: 0;
+    display: none; /* Minimalist: Removed noise */
 }
 
 .scanline {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0),
-        rgba(255, 255, 255, 0) 50%,
-        rgba(0, 0, 0, 0.1) 50%,
-        rgba(0, 0, 0, 0.1)
-    );
-    background-size: 100% 4px;
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.3;
+    display: none; /* Minimalist: Removed scanlines */
 }
 
 /* --- MATRIX LOGIN SCREEN --- */
@@ -96,21 +74,23 @@ body {
 .login-container {
     z-index: 1;
     text-align: center;
-    background: rgba(10, 10, 10, 0.9);
+    background: var(--panel-bg);
     padding: 50px;
     border: 1px solid var(--border-color);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    backdrop-filter: none; /* Minimalist: Removed blur */
+    box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Reduced shadow */
     max-width: 600px;
     width: 90%;
     animation: fadeIn 2s ease;
+    border-radius: 4px;
 }
 
 .login-title {
     font-size: 3rem;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.1em; /* Reduced spacing */
     margin-bottom: 10px;
-    text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    text-shadow: none; /* Minimalist: Removed glow */
+    font-weight: 300;
 }
 
 .version {
@@ -444,13 +424,14 @@ body {
 
 .hero-section {
     flex: 2;
-    border: 1px solid var(--border-active);
+    border: 1px solid var(--border-color); /* Simplified border */
     padding: 40px;
     position: relative;
-    background: radial-gradient(circle at top right, rgba(255,255,255,0.05) 0%, transparent 40%);
+    background: var(--panel-bg); /* Flat background */
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border-radius: 4px;
 }
 
 .block-header {
@@ -485,12 +466,12 @@ body {
 }
 
 .current-task-title {
-    font-size: 2.5rem;
-    font-weight: 300;
+    font-size: 3rem; /* Larger, cleaner */
+    font-weight: 400;
     line-height: 1.1;
     margin-bottom: 40px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0;
     max-width: 800px;
 }
 
@@ -538,15 +519,17 @@ body {
     padding: 15px;
     background: var(--panel-bg);
     margin-bottom: 20px;
+    border-radius: 4px; /* Slight rounded corners */
 }
 
 .mini-title {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--text-secondary);
-    margin-bottom: 12px;
-    letter-spacing: 0.1em;
+    margin-bottom: 15px;
+    letter-spacing: 0.05em;
     border-bottom: 1px solid var(--border-color);
-    padding-bottom: 5px;
+    padding-bottom: 8px;
+    font-weight: 600;
 }
 
 .checklist {
@@ -800,9 +783,15 @@ body {
 }
 
 /* Craving Panel */
+.craving-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
 .craving-btn {
     width: 100%;
-    padding: 15px;
+    padding: 12px;
     background: rgba(255, 0, 0, 0.1);
     border: 1px solid rgba(255, 0, 0, 0.3);
     color: #ff6b6b;
@@ -811,7 +800,7 @@ body {
     letter-spacing: 0.1em;
     cursor: pointer;
     transition: 0.3s;
-    margin-bottom: 15px;
+    font-size: 0.9rem;
 }
 
 .craving-btn:hover {
