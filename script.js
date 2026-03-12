@@ -13,8 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const systemLog = document.getElementById('system-log');
     const blockStatusText = document.getElementById('block-status-text');
 
-    // Block Controls (REMOVED)
-    
     // Overtime
     const overtimePanel = document.getElementById('overtime-panel');
     const otReason = document.getElementById('ot-reason');
@@ -252,6 +250,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Start System
         updateTime();
         renderTimeline();
+        
+        // Start Notifications
+        requestNotificationPermission();
+        startMatrixReminders();
     }
     
     function updateLevelUI() {
@@ -889,7 +891,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Anti-Craving Protocol
+    // --- Reset Logic ---
+    const btnReset = document.getElementById('btn-hard-reset');
+    if(btnReset) {
+        btnReset.addEventListener('click', () => {
+            if(confirm("ADVERTENCIA: ¿Reiniciar TODO el historial y progreso a 0?")) {
+                localStorage.clear();
+                location.reload();
+            }
+        });
+    }
+
+    // --- Craving Logic ---
     let cravingTimer = null;
     
     function handleCravingClick() {
@@ -909,48 +922,72 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cravingBtnCaffeine) cravingBtnCaffeine.addEventListener('click', handleCravingClick);
 
     function startCravingProtocol() {
-        // Use custom steps if available (Karol) or default (Kevin)
-        const steps = appState.customCravingSteps 
-            ? appState.customCravingSteps 
-            : [
-                { id: 'step-game', text: '1. JUGAR UN JUEGO (15m)', time: 900000 },
-                { id: 'step-family', text: '2. ESTAR CON FAMILIA (15m)', time: 900000 }
-            ];
+        // Updated Protocol per user request:
+        // 1. Respiración profunda (10s)
+        // 2. Beber agua (30s)
+        // 3. Jugar (10 min -> 600s)
+        
+        const steps = [
+            { id: 'step-breath', text: '1. RESPIRACIÓN PROFUNDA', duration: 10 },
+            { id: 'step-water', text: '2. BEBER AGUA', duration: 30 },
+            { id: 'step-play', text: '3. JUGAR', duration: 600 } // 10 mins
+        ];
             
         // Render steps dynamically
         cravingSteps.innerHTML = '';
         steps.forEach(step => {
             const div = document.createElement('div');
             div.className = 'step';
-            div.id = step.id || 'step-' + Math.random().toString(36).substr(2, 5);
-            div.textContent = step.text;
+            div.id = step.id;
+            div.innerHTML = `${step.text} <span class="step-time">(${formatDuration(step.duration)})</span>`;
             cravingSteps.appendChild(div);
         });
         
         // Re-append actions
         cravingSteps.appendChild(cravingActions);
         
-        let currentStep = 0;
+        let currentStepIndex = 0;
         
         function runStep() {
-            if (currentStep >= steps.length) {
+            if (currentStepIndex >= steps.length) {
                 cravingActions.classList.remove('hidden');
                 return;
             }
             
-            const stepData = steps[currentStep];
-            const el = cravingSteps.children[currentStep]; // Assuming order matches
+            const stepData = steps[currentStepIndex];
+            const el = cravingSteps.children[currentStepIndex]; 
+            const timeSpan = el.querySelector('.step-time');
+            
             el.classList.add('active');
             
-            setTimeout(() => {
-                el.classList.remove('active');
-                el.classList.add('done');
-                currentStep++;
-                runStep();
-            }, stepData.time);
+            let timeLeft = stepData.duration;
+            
+            // Initial display
+            timeSpan.textContent = `(${formatDuration(timeLeft)})`;
+            
+            cravingTimer = setInterval(() => {
+                timeLeft--;
+                timeSpan.textContent = `(${formatDuration(timeLeft)})`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(cravingTimer);
+                    el.classList.remove('active');
+                    el.classList.add('done');
+                    timeSpan.textContent = "(COMPLETADO)";
+                    currentStepIndex++;
+                    runStep();
+                }
+            }, 1000);
         }
         
         runStep();
+    }
+
+    function formatDuration(seconds) {
+        if (seconds < 60) return `${seconds}s`;
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        return `${m}m ${s > 0 ? s + 's' : ''}`;
     }
 
     btnDefeated.addEventListener('click', () => {
@@ -967,6 +1004,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function resetCravingUI() {
+        if (cravingTimer) clearInterval(cravingTimer); // Clear any running timer
+        
         cravingSteps.classList.add('hidden');
         cravingActions.classList.add('hidden');
         
@@ -981,9 +1020,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (cravingBtnCaffeine) cravingBtnCaffeine.classList.remove('hidden');
         }
         
-        document.querySelectorAll('.step').forEach(s => {
-            s.classList.remove('active', 'done');
-        });
+        // Remove dynamic children but keep structure valid for next run
+        // Actually startCravingProtocol clears innerHTML so we just need to reset classes if we were reusing
+        // But since we clear HTML, we are good.
     }
 
     function updateCravingStats() {
@@ -1005,4 +1044,46 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.transition = 'opacity 1s ease';
         document.body.style.opacity = 1;
     }, 100);
+
+    // --- Notification Logic ---
+    function requestNotificationPermission() {
+        if (!("Notification" in window)) {
+            console.log("This browser does not support desktop notification");
+            return;
+        }
+
+        if (Notification.permission === "default") {
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    addLogEntry("SISTEMA: ENLACE NEURAL ACTIVO");
+                    new Notification("NEXUS SYSTEM", { 
+                        body: "CONEXIÓN ESTABLECIDA",
+                        icon: "https://cdn-icons-png.flaticon.com/512/3063/3063822.png" // Matrix-like icon
+                    });
+                }
+            });
+        }
+    }
+
+    function startMatrixReminders() {
+        // Clear existing interval if any to avoid duplicates
+        if (window.matrixReminderInterval) clearInterval(window.matrixReminderInterval);
+        
+        // 5 minutes = 300,000 ms
+        window.matrixReminderInterval = setInterval(() => {
+            if (Notification.permission === "granted") {
+                const n = new Notification("NEXUS SYSTEM", { 
+                    body: "STILL ON MATRIX?",
+                    icon: "https://cdn-icons-png.flaticon.com/512/3063/3063822.png",
+                    vibrate: [200, 100, 200]
+                });
+                
+                // Close automatically after 5s
+                setTimeout(() => n.close(), 5000);
+            }
+        }, 300000); 
+        
+        addLogEntry("SISTEMA: PROTOCOLO DE ALERTA (5MIN) INICIADO");
+    }
+
 });
